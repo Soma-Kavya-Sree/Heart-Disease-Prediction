@@ -1,0 +1,88 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Heart Disease Predictor — Explainable</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <h1>Heart Disease Predictor</h1>
+      <p class="lead">Enter patient features and get prediction with SHAP &amp; LIME explanations.</p>
+    </header>
+
+    <!-- 🔹 New Feature Guide Section -->
+    <section class="card guide-card">
+      <h2>Feature Guide</h2>
+      <p>Below are the 14 input features used in this model, with their meaning and value ranges:</p>
+      <ul>
+        <li><b>age</b> — Age in years (e.g., 29–77).</li>
+        <li><b>sex</b> — Biological sex (1 = male, 0 = female).</li>
+        <li><b>cp</b> (Chest Pain Type) — 0: Typical angina, 1: Atypical angina, 2: Non-anginal pain, 3: Asymptomatic.</li>
+        <li><b>trestbps</b> — Resting blood pressure in mm Hg (94–200 typical).</li>
+        <li><b>chol</b> — Serum cholesterol in mg/dl (126–564 typical).</li>
+        <li><b>fbs</b> — Fasting blood sugar &gt; 120 mg/dl (1 = true, 0 = false).</li>
+        <li><b>restecg</b> (Resting ECG results) — 0: Normal, 1: ST-T wave abnormality, 2: Left ventricular hypertrophy.</li>
+        <li><b>thalach</b> — Maximum heart rate achieved (71–202 typical).</li>
+        <li><b>exang</b> — Exercise-induced angina (1 = yes, 0 = no).</li>
+        <li><b>oldpeak</b> — ST depression induced by exercise relative to rest (0–6.2 typical).</li>
+        <li><b>slope</b> (Slope of ST segment) — 0: Upsloping, 1: Flat, 2: Downsloping.</li>
+        <li><b>ca</b> — Number of major vessels (0–3) colored by fluoroscopy.</li>
+        <li><b>thal</b> — Thalassemia (1 = normal, 2 = fixed defect, 3 = reversible defect).</li>
+        <li><b>target</b> — (Label, not entered) 0 = No heart disease, 1 = Heart disease.</li>
+      </ul>
+    </section>
+    <!-- 🔹 End Feature Guide Section -->
+
+    <section class="card form-card" id="form-area">
+      <h2>Input Features</h2>
+      <form id="predict-form">
+        <div class="grid">
+          {% for feat in feature_names %}
+          <label class="field">
+            <span class="label-text">{{ feat }}</span>
+            <input name="f{{ loop.index0 }}" data-feat="{{ feat }}" type="number" step="any" required />
+          </label>
+          {% endfor %}
+        </div>
+
+        <div class="actions">
+          <button id="predict-btn" type="submit" class="btn">Predict</button>
+          <div id="spinner" class="spinner hidden" aria-hidden="true"></div>
+        </div>
+      </form>
+    </section>
+
+    <section class="card result-card hidden" id="result-area">
+      <h2>Prediction</h2>
+      <p id="prediction-text"></p>
+      <p id="prob-text"></p>
+
+      <div class="explain">
+        <div>
+          <h3>SHAP (feature impact)</h3>
+          <img id="shap-img" src="" alt="SHAP bar" />
+        </div>
+        <div>
+          <h3>LIME (local explainer)</h3>
+          <p><a id="lime-link" href="#" target="_blank">Open LIME report</a></p>
+        </div>
+      </div>
+
+      <button id="reset-btn" class="btn secondary">Reset</button>
+    </section>
+
+    <footer class="footer">
+      <small>Built with SHAP &amp; LIME · Model trained with SMOTE &amp; StandardScaler</small>
+    </footer>
+  </main>
+
+  <script>
+    const FEATURE_COUNT = {{ feature_names|length }};
+  </script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
