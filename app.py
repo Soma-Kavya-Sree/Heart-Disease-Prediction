@@ -19,7 +19,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 # ---------- Config ----------
-DATA_PATH = "heart.csv"   # put dataset in same folder or change path
+DATA_PATH = "heart_cleveland.csv"   # put dataset in same folder or change path
 STATIC_SHAP = Path("static/shap")
 STATIC_LIME = Path("static/lime")
 STATIC_SHAP.mkdir(parents=True, exist_ok=True)
