@@ -31,6 +31,7 @@ app = Flask(__name__, static_folder="static", template_folder="templates")
 print("Loading dataset and preparing model (this may take a few seconds)...")
 df = pd.read_csv(DATA_PATH)
 feature_names = df.drop(columns="target", axis=1).columns.tolist()
+
 X = df[feature_names]
 y = df["target"]
 
